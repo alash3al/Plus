@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Plus : Asynchronous I/O environment in pure PHP">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Plus</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/alash3al/Plus">View on GitHub</a>
+
+          <h1 id="project_title">Plus</h1>
+          <h2 id="project_tagline">Asynchronous I/O environment in pure PHP</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/alash3al/Plus/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/alash3al/Plus/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>&lt;!DOCTYPE html&gt;
+
+    </p>
+        &lt;!-- basic meta --&gt;
+        
+        
+        
+        
+
+<pre><code>    &lt;title&gt;Horus Plus, asynchronous I/O and network programming in pure PHP&lt;/title&gt;
+
+    &lt;!-- CSS --&gt;
+    &lt;link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/cosmo/bootstrap.min.css" rel="stylesheet" /&gt;
+    &lt;link href="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.css" rel="stylesheet" /&gt;
+    &lt;link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" /&gt;
+
+    &lt;!-- favicon --&gt;
+    &lt;link href="https://scontent-a-mad.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10500339_421029108048154_5740342647673073365_n.jpg?oh=0166931f250910c2abdbdc602202ac09&amp;oe=54FD00C1" rel="shortcut icon" /&gt;
+
+    &lt;!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries --&gt;
+    &lt;!--[if lt IE 9]&gt;
+      &lt;script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"&gt;&lt;/script&gt;
+      &lt;script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"&gt;&lt;/script&gt;
+    &lt;![endif]--&gt;
+
+    &lt;style&gt;
+        body
+        {
+            padding-bottom: 30px;
+        }
+    &lt;/style&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;nav class="navbar navbar-default navbar-fixed-bottom one-page-nav" role="navigation"&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="navbar-header"&gt;
+                &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"&gt;
+                    &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt;
+                    &lt;span class="icon-bar"&gt;&lt;/span&gt;
+                    &lt;span class="icon-bar"&gt;&lt;/span&gt;
+                    &lt;span class="icon-bar"&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;a class="navbar-brand" href="#intro"&gt;&lt;span class="glyphicon glyphicon-fire"&gt;&lt;/span&gt; Horus Framework&lt;/a&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Collect the nav links, forms, and other content for toggling --&gt;
+            &lt;div class="collapse navbar-collapse navbar-ex1-collapse"&gt;
+                &lt;ul class="nav navbar-nav"&gt;
+                    &lt;li class="dropdown"&gt;
+                        &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"&gt;&lt;span class="fa fa-key"&gt;&lt;/span&gt; Choose API &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt;
+                        &lt;ul class="dropdown-menu" role="menu"&gt;
+                            &lt;li&gt;&lt;a href="#prototype"&gt;&amp;rsaquo; Prototype&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#events"&gt;&amp;rsaquo; EventEmitter&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#console"&gt;&amp;rsaquo; Console&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#timers"&gt;&amp;rsaquo; Timers&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#ioloop"&gt;&amp;rsaquo; IOLoop&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#iostream"&gt;&amp;rsaquo; IOStream&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#ioclient"&gt;&amp;rsaquo; IOClient&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#ioserver"&gt;&amp;rsaquo; IOServer&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#frame"&gt;&amp;rsaquo; Frame&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li class="dropdown"&gt;
+                        &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"&gt;&lt;span class="fa fa-link"&gt;&lt;/span&gt; Links &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt;
+                        &lt;ul class="dropdown-menu" role="menu"&gt;
+                            &lt;li&gt;&lt;a target="_blank" href="//github.com/alash3al/Horus"&gt;&amp;rsaquo; Horus (Micro), Github&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a target="_blank" href="//facebook.com/horus.framework"&gt;&amp;rsaquo; Horus, Facebook&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a target="_blank" href="//fb.me/alash3al"&gt;&amp;rsaquo; Maintainer&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+            &lt;!-- /.navbar-collapse --&gt;
+        &lt;/div&gt;
+        &lt;!-- /.container --&gt;
+    &lt;/nav&gt;
+
+    &lt;div class="container" style="padding-bottom: 90px; max-width: 700px;"&gt;
+
+        &lt;!-- Logo --&gt;
+        &lt;div class="row text-center center-block" style="margin-top: 20px;"&gt;
+            &lt;div class="text-center center-block"&gt;
+                &lt;img class="img-responsive img-thumbnail" src="https://scontent-b-mad.xx.fbcdn.net/hphotos-xfa1/v/t1.0-9/1507110_421028611381537_23004464390051550_n.png?oh=d3363456912d121175a7e3441e89cee7&amp;oe=55174FBE" /&gt;
+            &lt;/div&gt;
+            &lt;br /&gt;                
+            &lt;div class="text-center center-block"&gt;
+                &lt;span&gt;&lt;iframe src="http://ghbtns.com/github-btn.html?user=alash3al&amp;repo=Plus&amp;type=watch&amp;count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"&gt;&lt;/iframe&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;iframe src="http://ghbtns.com/github-btn.html?user=alash3al&amp;repo=Plus&amp;type=fork&amp;count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"&gt;&lt;/iframe&gt;&lt;/span&gt;
+                &lt;span&gt;&lt;iframe src="http://ghbtns.com/github-btn.html?user=alash3al&amp;type=follow&amp;count=true" height="30" width="168" frameborder="0" scrolling="0" style="width:168px; height: 30px;" allowTransparency="true"&gt;&lt;/iframe&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+       &lt;!-- End Logo --&gt; 
+
+        &lt;hr /&gt;
+
+        &lt;!-- BODY --&gt;
+        &lt;div class="center-block"&gt;
+
+            &lt;h1 class="center-block text-center text-muted"&gt;&lt;span class="fa fa-fire"&gt;&lt;/span&gt; Welcome to Plus environment&lt;/h1&gt;
+
+            &lt;blockquote class="well"&gt;
+                &lt;strong&gt;Plus&lt;/strong&gt; is just an asynchronous event-loop for handling I/O events &amp;amp; network sockets in pure PHP,
+                You can now compare &lt;code&gt;PHP vs NodeJS&lt;/code&gt; . &lt;br /&gt;
+                In another words it is the micro implementation of nodejs in pure php .
+            &lt;/blockquote&gt;
+            &lt;br /&gt;
+</code></pre>
+
+<pre><code>
+    // a very simple HTTP server in Plus environment
+
+    include "Plus.php";
+
+    use Plus\Frame;
+
+    $app    =   new Frame;
+    $server =   $app-&gt;ioserver();
+
+    $server-&gt;on("connection", function($client){
+        $client-&gt;on('data', function($data) use($client) {
+            $client-&gt;write("HTTP/1.1 200 OK\r\nContent-Type: text/html;\r\nServer: Plus/1.0\r\n\r\n<h1>
+<a id="hello" class="anchor" href="#hello" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hello</h1>");
+        });
+        $client-&gt;on("drain", function($client){
+            $client-&gt;close();
+        });
+        $client-&gt;on('error', function($e, $client){
+            $client-&gt;close();
+        });
+    });
+
+    $server-&gt;listen(8080);
+    $app-&gt;run();
+</code></pre>
+
+<pre><code>            &lt;div id="prototype"&gt;
+                &lt;h1&gt;&lt;span class="fa fa-bookmark"&gt;&lt;/span&gt; Prototype&lt;/h1&gt;
+                &lt;p class="well"&gt;
+                    Prototype is a class that extends PHP's &lt;a target="" href="http://php.net/manual/en/class.arrayobject.php"&gt;ArrayObject&lt;/a&gt;
+                    and adds some features to it, lets see examples:
+                &lt;/p&gt;
+</code></pre>
+
+<pre><code>
+    require "Plus.php";
+
+    use Plus\Prototype;
+
+    // lets use it as a container for our vars
+    $my = new Prototype;
+
+    // assign a value to a var
+    $my-&gt;key1 = "value1";
+
+    // array style
+    $my['key2'] = "value2";
+
+    // a closure
+    $my-&gt;func = function(){
+        print "func";
+    };
+
+    // call the closure
+    $my-&gt;func();
+
+    // or
+    $my['func']();
+
+    // nested, 'without getting errors'
+    $my-&gt;x-&gt;y-&gt;z = "Wow";
+    $my-&gt;x-&gt;y-&gt;z-&gt;a-&gt;b-&gt;c-&gt;d = array();
+
+    // export ?
+    $my-&gt;toArray();
+
+    // import ?
+    $my-&gt;import(array(/*...*/));
+
+    // you can do anything could ArrayObject do
+
+    // lets create a class that extends it
+    Class Wow extends Prototype{}
+    
+    // start it
+    $wow = new Wow(array(
+        /*
+            optional param to import array/object into the wow scope
+        */
+    ));
+
+    // get wow instance ?
+    Wow::instance();
+
+    // and so ...
+    $wow-&gt;x = "v";
+</code></pre>
+
+<pre><code>            &lt;/div&gt;
+
+            &lt;hr /&gt;
+
+            &lt;div id="events"&gt;
+                &lt;h1&gt;&lt;span class="fa fa-bookmark"&gt;&lt;/span&gt; EventEmitter&lt;/h1&gt;
+                &lt;p class="well"&gt;
+                    A class that helps you create an event-driven apps, it is inspired by javascript EventEmitter, it also extends
+                    the &lt;a href="#prototype"&gt;Prototype&lt;/a&gt; Class
+                &lt;/p&gt;
+</code></pre>
+
+<pre><code>
+    require "Plus.php";
+
+    use Plus\EventEmitter;
+
+    // construct
+    $e = new EventEmitter;
+
+    // register a new listener
+    $e-&gt;addListener('event.1', $l1 = function(){
+        print "listener.1";
+    });
+
+    // you can also use this alias
+    $e-&gt;on('event.1', function(){
+        print "listener.2";
+    });
+
+    // you can cancel the next listeners in the event queue
+    // just like javascript
+    $e-&gt;on('event.1', $l2 = function(){
+        print "will cancel next";
+        return false; //&gt; this is the solution
+    });
+
+    // to register a one-time listener
+    // there is an argument called $once
+    // the third argument will be true
+    $e-&gt;on('event.1', function(){
+        print "listener.3 only-once";
+    }, true);
+
+    // or use this
+    $e-&gt;once('event.1', $l3 = function(){
+        print "listener.4 only-once";
+    });
+
+    // to emit the event.1 listeners
+    $e-&gt;emit('event.1');
+
+    // you can also pass arguments
+    // as the second the argument
+    $e-&gt;emit('event.1', "arg1");
+    $e-&gt;emit('event.1', array("arg1", "arg2"));
+
+    // an example for filters
+    $test = "text";
+
+    $e-&gt;on('event.2', $l4 = function($text, $last_return){
+        // last return is a param that has the value
+        // of the last executed listener !
+        return "<b>{$text}</b>";
+    });
+
+    // arg1: the event-name
+    // arg2: the param to pass to the listeners
+    // arg3: the default value to return if it were empty
+    $text = $e-&gt;emit('event.2', $text, $text);
+
+    // remove a registered listener from an event
+    $e-&gt;removeListener('event.1', $l1);
+
+    // remove all event-listener
+    $e-&gt;removeAllListeners('event.1');
+
+    // remove all listeners for all events
+    $e-&gt;removeAllListeners();
+
+    // set the maximum listeners per event
+    // default = 0 "unlimited"
+    // we will set to "10"
+    $e-&gt;setMaxListeners(10);
+
+    // get events listeners array
+    $e-&gt;listeners();
+
+    // get count of listeners in an event
+    $e-&gt;listenerCount('event.1');
+</code></pre>
+
+<pre><code>            &lt;/div&gt;
+
+            &lt;hr /&gt;
+
+            &lt;div id="console"&gt;
+                &lt;h1&gt;&lt;span class="fa fa-bookmark"&gt;&lt;/span&gt; Console&lt;/h1&gt;
+                &lt;p class="well"&gt;
+                    A class that helps you writing and reading from the console window
+                &lt;/p&gt;
+</code></pre>
+
+<pre><code>
+    require "Plus.php";
+
+    use Plus\Console;;
+
+    // print to the stdout
+    Console::log("hello world");
+    Console::log("hello, %s, %s", array("world", "plus"));
+
+    // this is just an alias of Console::log()
+    Console::error("hello error");
+
+    // a python style
+    $name = Console::input("what is your name, %s ?", "please");
+    Console::log("Your name is: %s", $name);
+</code></pre>
+
+<pre><code>            &lt;/div&gt;
+
+            &lt;hr /&gt;
+
+            &lt;div id="timers"&gt;
+                &lt;h1&gt;&lt;span class="fa fa-bookmark"&gt;&lt;/span&gt; Timers&lt;/h1&gt;
+                &lt;p class="well"&gt;
+                    A pure php timers class, it extends &lt;a href="#prototype"&gt;Prototype&lt;/a&gt; class .
+                &lt;/p&gt;
+</code></pre>
+
+<pre><code>
+    require "Plus.php";
+
+    use Plus\Timers;;
+
+    $timers = new Timers;
+
+    // execute the callback each 5 seconds
+    // the timer object is passed as the argument
+    // also it returns the timer object .
+    $timer = $timers-&gt;setInterval(function($timer){
+        // your code here
+    }, 5);
+
+    // remove the timer
+    $timers-&gt;clearIntervals($timer);
+
+    // register a one time callback to be executed after 5 seconds
+    // also it returns the timer object and return it .
+    $timer2 = $timers-&gt;setTimeout(function($timer){
+        // your code here
+    }, 5);
+
+    // remove it
+    $timers-&gt;clearTimeouts($timer2);
+
+    // run the timers tick ?
+    $timers-&gt;tick();
+</code></pre>
+
+<pre><code>            &lt;/div&gt;
+
+            &lt;hr /&gt;
+
+            &lt;div id="ioloop"&gt;
+                &lt;h1&gt;&lt;span class="fa fa-bookmark"&gt;&lt;/span&gt; IOLoop&lt;/h1&gt;
+                &lt;p class="well"&gt;
+                    An asynchronous I/O event-loop library, it extends &lt;a href="timers"&gt;Timers&lt;/a&gt; class .
+                    This library will use &lt;code&gt;libevent&lt;/code&gt; extension if it exists, else it will use the &lt;code&gt;stream_select()&lt;/code&gt; function .
+                &lt;/p&gt;
+</code></pre>
+
+<pre><code>
+    require "Plus.php";
+
+    use Plus\IOLoop;;
+
+    $loop = new IOLoop;
+
+    // register a new stream
+    // here we will watch the STDIN for read events
+    $loop-&gt;add(STDIN, IOLoop::READ, function($stream, $loop){
+        // this is the stream handler
+        // when the STDIN changes
+        // $stream: holds the stream resource "STDIN"
+        // $loop: the loop object
+    });
+
+    // register a stream that we will watch for writes
+    $loop-&gt;add(STDOUT, IOLoop::WRITE, function($stream, $loop){ /* ... */ });
+
+    // remove a stream from read events ?
+    $loop-&gt;remove(STDIN, IOLoop::READ);
+
+    // or remove a stream from all events
+    $loop-&gt;remove(STDIN);
+
+    // stop the loop
+    $loop-&gt;stop();
+
+    // watch the registered streams "once"
+    $timeout = 5; // used in stream_select()
+    $loop-&gt;watch($timeout);
+
+    // infinity loop
+    $timeout = 5; // used in stream_select() $timeout param
+    $delay = 5000; // used in usleep as an idle for the loop
+    $loop-&gt;run($timeout, $delay);
+</code></pre>
+
+<pre><code>            &lt;/div&gt;
+
+            &lt;hr /&gt;
+
+            &lt;div id="iostream"&gt;
+                &lt;h1&gt;&lt;span class="fa fa-bookmark"&gt;&lt;/span&gt; IOStream&lt;/h1&gt;
+                &lt;p class="well"&gt;
+                    A library that based on &lt;a href="#events"&gt;EventEmitter&lt;/a&gt; and holds the streams you want automatically in the specified ioloop .
+                &lt;/p&gt;
+</code></pre>
+
+<pre><code>
+    require "Plus.php";
+
+    use Plus\IOLoop;
+    use Plus\IOStream;
+
+    // start the main loop
+    $loop = new IOLoop;
+
+    // create an asynchronous READABLE file
+    $file = new IOStream($loop, fopen("file.ext", "r"), IOStream::READABLE);
+
+    //&gt; Stream types: "Constants"
+    // IOStream::READABLE   -&gt;  for creating a read-only stream .
+    // IOStream::WRITEABLE  -&gt;  for creating a write-only stream .
+    // IOStream::DUPLEX     -&gt;  for creating a read/write stream .
+
+    //&gt; Properties
+    //{
+        // the stream resource
+        $file-&gt;stream;
+    
+        // the maximum buffer-size used while reading
+        // default 4096
+        $file-&gt;bufferSize;
+    
+        // the callback used in reading
+        // default fread
+        $file-&gt;reader;
+    
+        // the callback used in writing
+        // default is fwrite
+        $file-&gt;writer;
+    //}
+
+    //&gt; Events
+    /*{
+         "error"       when there is aan error, args [$errstr, IOStream]
+         "data"        when there is any data available, args[$data, IOStream]
+         "end"         when the stream reaches end of data being read from readable stream, args [IOStream]
+         "flush"       when the data is being flushed, args [$data, IOStream]
+         "drain"       when the stream data is drained, args [IOStream]
+         "close"       when the stream is being closed, args [IOStream]
+    }*/
+
+    //&gt; methods
+    //{
+        // check if the current stream is readable
+        $file-&gt;isReadable(); //&gt; true
+    
+        // check whether the stream is writable
+        $file-&gt;isWritable(); //&gt; false
+    
+        // check whether the stream is duplex
+        $file-&gt;isDuplex(); //&gt; false
+    
+        // remove the stream [if it were readable]
+        // from the ioloop read-events
+        $file-&gt;pause(); //&gt; return $this
+    
+        // resume the stream [if it were readable]
+        // into the ioloop read-events
+        $file-&gt;resume(); //&gt; return $this
+    
+        // pipe the current stream to another
+        // this will copy the file data to the STDOUT "asynchronous"
+        $out = new IOStream($loop, STDOUT, IOStream::WRITABLE);
+        $file-&gt;pipe($out)-&gt;on('end', function($file) use($out) {
+            $file-&gt;close();
+        }); //&gt; return $this
+    
+        // unpipe or import data from another stream [only if the stream is writable]
+        // $file-&gt;unpipe($src);
+        // but our stream is read-only
+    
+        // check whether the stream is closed
+        $file-&gt;closed();
+    //}
+
+    // infinity loop
+    $timeout = 5; // used in stream_select() $timeout param
+    $delay = 5000; // used in usleep as an idle for the loop
+    $loop-&gt;run($timeout, $delay);
+</code></pre>
+
+<pre><code>            &lt;/div&gt;
+
+            &lt;hr /&gt;
+
+            &lt;div id="ioclient"&gt;
+                &lt;h1&gt;&lt;span class="fa fa-bookmark"&gt;&lt;/span&gt; IOClient&lt;/h1&gt;
+                &lt;p class="well"&gt;
+                    A class that based on &lt;a href="#iostream"&gt;IOStream&lt;/a&gt; but for asynchronous socket clients programming
+                &lt;/p&gt;
+</code></pre>
+
+<pre><code>
+    require "Plus.php";
+
+    use Plus\IOLoop;
+    use Plus\IOClient;
+
+    // start the main loop
+    $loop = new IOLoop;
+
+    // create an asynchronous READABLE/WRITABLE stream
+    $php = new IOClient($loop, IOClient::DUPLEX);
+
+    //&gt; Stream types: "Constants"
+    // IOClient::READABLE   -&gt;  for creating a read-only stream .
+    // IOClient::WRITEABLE  -&gt;  for creating a write-only stream .
+    // IOClient::DUPLEX     -&gt;  for creating a read/write stream .
+
+    //&gt; Properties [the same as IOStream]
+
+    //&gt; Events
+    /*{
+         "connection"  when the connection is created successfully, args [IOClient]
+         "error"       when there is aan error, args [$errstr, IOClient]
+         "data"        when there is any data available, args[$data, IOClient]
+         "end"         when the stream reaches end of data being read from readable stream, args [IOClient]
+         "flush"       when the data is being flushed, args [$data, IOClient]
+         "drain"       when the stream data is drained, args [IOClient]
+         "close"       when the stream is being closed, args [IOClient]
+    }*/
+
+    // when the connection created, lets write some data
+    // only when it is available for writing
+    $php-&gt;on('connection', function($php){
+        $php-&gt;write("GET / HTTP/1.1\r\nHost: php.net\r\n\r\n");
+    });
+
+    // when there is any response, write it to the stdout
+    $php-&gt;pipe(new IOStream($loop, STDOUT, IOStream::WRITABLE));
+
+    //&gt; methods [thge same as IOStream] + connect($address, array $context = array())
+    // connect to PHP.net site
+    $context = array(); // any valid php stream context options
+    $php-&gt;connect('tcp://php.net:80');
+
+    // infinity loop
+    $timeout = 5; // used in stream_select() $timeout param
+    $delay = 5000; // used in usleep as an idle for the loop
+    $loop-&gt;run($timeout, $delay);
+</code></pre>
+
+<pre><code>            &lt;/div&gt;
+
+            &lt;hr /&gt;
+
+            &lt;div id="ioserver"&gt;
+                &lt;h1&gt;&lt;span class="fa fa-bookmark"&gt;&lt;/span&gt; IOServer&lt;/h1&gt;
+                &lt;p class="well"&gt;
+                    A class that based on &lt;a href="#events"&gt;EventEmitter&lt;/a&gt; but for asynchronous socket servers programming
+                &lt;/p&gt;
+</code></pre>
+
+<pre><code>
+    require "Plus.php";
+
+    use Plus\IOLoop;
+    use Plus\IOServer;
+
+    // start the main loop
+    $loop = new IOLoop;
+
+    // create an asynchronous socket-server
+    $server = new IOServer($loop);
+
+    //&gt; Events
+    /*{
+         "listening"   when the server starts listening for connections, args [IOServer]
+         "connection"  when the connection is created successfully, args [IOStream]
+         "error"       when there is aan error, args [$errstr, IOServer]
+    }*/
+
+    // lets create a simple HTTP Server
+    // that only prints "Hello World"
+    // $client: is an instance of IOStream
+    $server-&gt;on("connection", function($client){
+        $client-&gt;on('data', function($data) use($client) {
+            $client-&gt;write("HTTP/1.1 200 OK\r\nContent-Type: text/html;\r\nServer: Plus/1.0\r\n\r\n<h1>
+<a id="hello-world" class="anchor" href="#hello-world" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hello World</h1>");
+        });
+        $client-&gt;on("drain", function($client){
+            $client-&gt;close();
+        });
+        $client-&gt;on('error', function($e, $client){
+            $client-&gt;close();
+        });
+    });
+
+    // start listening for connections
+    // with a context options for setting the backlog "512"
+    $server-&gt;listen(8080, array('socket' =&gt; array('backlog' =&gt; 512)));
+
+    // infinity loop
+    $timeout = 5; // used in stream_select() $timeout param
+    $delay = 5000; // used in usleep as an idle for the loop
+    $loop-&gt;run($timeout, $delay);
+</code></pre>
+
+<pre><code>            &lt;/div&gt;
+
+            &lt;hr /&gt;
+
+            &lt;div id="frame"&gt;
+                &lt;h1&gt;&lt;span class="fa fa-bookmark"&gt;&lt;/span&gt; Frame&lt;/h1&gt;
+                &lt;p class="well"&gt;
+                    Just a factory for handling our main classes, it is also based on &lt;a href="#ioloop"&gt;IOLoop&lt;/a&gt; and it will bind them to its ioloop instance .
+                &lt;/p&gt;
+</code></pre>
+
+<pre><code>
+    require "Plus.php";
+
+    use Plus\Frame;
+
+    $app    =   new Frame;
+
+    //&gt; Creating a new ioserver
+    // $server = $app-&gt;ioserver();
+
+    //&gt; Creating a new ioclient
+    // $type [IOClient::READABLE/WRITABLE/DUPLEX]
+    // $client = $app-&gt;ioclient($type);
+
+    //&gt; Createing a new IOStream
+    // $type [IOStream::READABLE/WRITABLE/DUPLEX]
+    // $stream: the resource, e.g: 'STDIN'
+    // $client = $app-&gt;iostream($stream, $type);
+
+    //&gt; Createing a new Prototype
+    // $vars = $app-&gt;prototype();
+
+    $app-&gt;run();
+</code></pre>
+
+<pre><code>            &lt;/div&gt;
+
+
+            &lt;br /&gt;
+
+            &lt;footer class="center-block text-center panel panel-default" style="padding: 15px;"&gt;
+                Copyright &amp;copy; 2015 &amp;nbsp; Plus PHP Framework, &lt;br /&gt;
+                By &lt;a target="_blank" href="//alash3al.github.io/Me"&gt;Mohammed Al Ashaal&lt;/a&gt;,&lt;br /&gt;
+            &lt;/footer&gt;
+
+        &lt;/div&gt;
+        &lt;!-- BODY --&gt;
+    &lt;/div&gt;
+    &lt;!-- /.container --&gt;
+
+    &lt;!-- JavaScript --&gt;
+    &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"&gt;&lt;/script&gt;
+    &lt;script src="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"&gt;&lt;/script&gt;
+    &lt;script src="//cdnjs.cloudflare.com/ajax/libs/jquery-one-page-nav/3.0.0/jquery.nav.min.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"').tooltip();
+            $('.one-page-nav').onePageNav();
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+
+<p></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Plus maintained by <a href="https://github.com/alash3al">alash3al</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
