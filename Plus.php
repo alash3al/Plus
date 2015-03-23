@@ -330,7 +330,7 @@ Class EventEmitter extends Prototype
      */
     public function removeAllListeners($event = null)
     {
-        if ( empty($event) )
+        if ( !empty($event) )
             unset($this->listeners[$event]);
         else
             $this->listeners = array();
