@@ -9,7 +9,7 @@
  * @license     MIT LICENSE
  * @version     1.0.0
  * 
- * LGPL LICENSE
+ * MIT LICENSE
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
