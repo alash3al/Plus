@@ -435,6 +435,10 @@
         // the callback used in writing
         // default is fwrite
         $file->writer;
+
+        // the stream id
+        // returns an unique integer of the stream
+        $file->id;
     //}
 
     //> Events
@@ -596,6 +600,83 @@
     $delay = 5000; // used in usleep as an idle for the loop
     $loop->run($timeout, $delay);
 </code></pre>
+                </div>
+
+                <hr />
+
+                <div id="httpd">
+                    <h1><span class="fa fa-bookmark"></span> HTTPD</h1>
+                    <p class="well">
+                        A class that based on <a href="#ioserver">IOServer</a> and implements a simple http daemon
+                    </p>
+<pre class="language-php"><code><?
+    include     "Plus.php";
+    use         Plus\IOLoop;
+    use         Plus\HTTPD;
+
+    $loop   =   new IOLoop;
+    $httpd  =   new HTTPD($loop);
+
+    // returns an array with key value pairs of
+    // status code => status message
+    $httpd->codes;
+
+    // bind a function that handles the whole request
+    // it called only when there is any data comes from the client
+    // $request: the request object [descriped later]
+    // $response: the response object [descriped later]
+    $httpd->createServer(function($request, $response)
+    {
+        $response->writeHead(200, ["Content-Type" => "text/html"]);
+        $response->write("<!DOCTYPE 'html'>");
+        $response->write("<html>");
+        $response->write("<head>");
+        $response->write("<title>Welcome to Plus http daemon</title>");
+        $response->write("</head>");
+        $response->write("<body>");
+        $response->write("<h1>It works !!</h1>");
+        $response->write("</body>");
+        $response->write("</html>");
+        $response->end();
+    });
+
+    //> Events:
+    /*{
+         "body"        when a body line is available, args[$bodyLine, IOStream]
+         "listening"   when the server starts listening for connections, args [IOServer]
+         "connection"  when the connection is created successfully, args [IOStream]
+         "error"       when there is aan error, args [$errstr, IOServer]
+    }*/
+
+    //> $request:
+    /*{
+          is a prototype object, contains the following:
+          1)- "Properties":
+              -> headers, a prototype object contains all request headers
+                         example: $request->headers->host "will get the host field"
+                         all headers in lower-case
+              -> method, the current request method, "GET"
+              -> uri, the current request uri, "/path?query"
+              -> path, the current request path, "/path/"
+              -> queryRaw, the current query string, "key=value&x=y"
+    }*/
+
+    //> $response:
+    /*{
+          is a protoype object that contains the following:
+          1)- "Properties":
+              -> headersSent: whether the headers has been sent or not
+          2)- "Methods":
+              -> writeHead($status, array $headers): to write headers directly
+                to the client, where the $status is a valid status code [200, ... etc]
+                and $headers are case-sensitive headers array
+              -> write($data): writes data directly to the client
+              -> end(): ends the request cycle and close the connection with the client
+    }*/
+
+    $httpd->listen(80);
+    $loop->run();
+?></code></pre>
                 </div>
 
                 <hr />
