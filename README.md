@@ -1,30 +1,41 @@
 # Plus
-An asynchronous I/O environment in pure PHP, in anthoer words, it is a micro NodeJS implementation in pure PHP
+An asynchronous I/O environment in pure PHP, in anthoer words, it is a micro nodejs implementation in pure PHP
 
 # Example:
-> a simple HTTP server that prints "Hello" . 
+> a simple HTTP server using the new HTTPD class
 
 
 ```php
-include "Plus.php";
+    include     "Plus.php";
+    use         Plus\Frame;
 
-use Plus\Frame;
+    $frame  =   new Frame;
+    $httpd  =   $frame->httpd();
 
-$app    =   new Frame;
-$server =   $app->ioserver();
-
-$server->on("connection", function($client){
-    $client->on('data', function($data) use($client) {
-        $client->write("HTTP/1.1 200 OK\r\nContent-Type: text/html;\r\nServer: Plus/1.0\r\n\r\n<h1>Hello</h1></h1>");
+    $httpd->createServer(function($request, $response)
+    {
+        $response->writeHead(200, ["Content-Type" => "text/html"]);
+        $response->write("<!DOCTYPE 'html'>");
+        $response->write("<html>");
+        $response->write("<head>");
+        $response->write("<title>Welcome to Plus http daemon</title>");
+        $response->write("</head>");
+        $response->write("<body>");
+        $response->write("<h1>It works !!</h1>");
+        $response->write("</body>");
+        $response->write("</html>");
+        $response->end();
     });
-    $client->on("drain", function($client){
-        $client->close();
-    });
-    $client->on('error', function($e, $client){
-        $client->close();
-    });
-});
 
-$server->listen(8080);
-$app->run();
+    $httpd->listen(80);
+    $frame->run();
 ```
+
+# Changelog:
+
+### 1.0.1
+* added `id` property to the `IOStream` class
+* added `HTTPD` class as our official HTTP Daemon
+
+### 1.0
+initialized
