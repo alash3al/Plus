@@ -7,7 +7,7 @@
  * @author      Mohammed Al Ashaal <http://is.gd/alash3al>
  * @link        http://alash3al.github.io/Plus
  * @license     MIT LICENSE
- * @version     1.0.0
+ * @version     1.0.1
  * 
  * MIT LICENSE
  *
@@ -330,7 +330,7 @@ Class EventEmitter extends Prototype
      */
     public function removeAllListeners($event = null)
     {
-        if ( !empty($event) )
+        if ( ! empty($event) )
             unset($this->listeners[$event]);
         else
             $this->listeners = array();
@@ -858,6 +858,12 @@ Class IOStream extends EventEmitter
     public      $stream;
 
     /**
+     * The stream resource id
+     * @var integer
+     */
+    public      $id;
+
+    /**
      * The length of data used while reading
      * @var integer
      */
@@ -887,6 +893,7 @@ Class IOStream extends EventEmitter
         parent::__construct();
 
         $this->stream       =   $stream;
+        $this->id           =   (int) $stream;
         $this->ioloop       =   $ioloop;
         $this->data         =   "";
         $this->bufferSize   =   4096;
@@ -1245,6 +1252,226 @@ Class IOServer extends EventEmitter
 // ------------------------------
 
 /**
+ * HTTPD
+ *
+ * @package     Plus
+ * @author      Mohammed Al Ashaal
+ * @since       1.0.1
+ * 
+ * @event       "body"          when a body line is available
+ * @event       "error"         when there is any error
+ * @event       "listening"     when the server starts listening
+ * @event       "connection"    when there is a new connection
+ */
+Class HTTPD extends IOServer
+{
+    /**
+     * All http status codes
+     * @var array
+     * @see <http://tools.ietf.org/html/rfc2616>
+     */
+    public $codes = array
+    (
+        100 => 'Continue',
+        101 => 'Switching Protocols',
+        102 => 'Processing',
+        200 => 'OK',
+        201 => 'Created',
+        202 => 'Accepted',
+        203 => 'Non-Authoritative Information',
+        204 => 'No Content',
+        205 => 'Reset Content',
+        206 => 'Partial Content',
+        207 => 'Multi-Status',
+        300 => 'Multiple Choices',
+        301 => 'Moved Permanently',
+        302 => 'Found',
+        303 => 'See Other',
+        304 => 'Not Modified',
+        305 => 'Use Proxy',
+        306 => 'Switch Proxy',
+        307 => 'Temporary Redirect',
+        400 => 'Bad Request',
+        401 => 'Unauthorized',
+        402 => 'Payment Required',
+        403 => 'Forbidden',
+        404 => 'Not Found',
+        405 => 'Method Not Allowed',
+        406 => 'Not Acceptable',
+        407 => 'Proxy Authentication Required',
+        408 => 'Request Timeout',
+        409 => 'Conflict',
+        410 => 'Gone',
+        411 => 'Length Required',
+        412 => 'Precondition Failed',
+        413 => 'Request Entity Too Large',
+        414 => 'Request-URI Too Long',
+        415 => 'Unsupported Media Type',
+        416 => 'Requested Range Not Satisfiable',
+        417 => 'Expectation Failed',
+        418 => 'I\'m a teapot',
+        422 => 'Unprocessable Entity',
+        423 => 'Locked',
+        424 => 'Failed Dependency',
+        425 => 'Unordered Collection',
+        426 => 'Upgrade Required',
+        449 => 'Retry With',
+        450 => 'Blocked by Windows Parental Controls',
+        500 => 'Internal Server Error',
+        501 => 'Not Implemented',
+        502 => 'Bad Gateway',
+        503 => 'Service Unavailable',
+        504 => 'Gateway Timeout',
+        505 => 'HTTP Version Not Supported',
+        506 => 'Variant Also Negotiates',
+        507 => 'Insufficient Storage',
+        509 => 'Bandwidth Limit Exceeded',
+        510 => 'Not Extended'
+    );
+
+    /**
+     * Constructor
+     * 
+     * @param   IOLoop  $ioloop
+     */
+    public function __construct(IOLoop $ioloop)
+    {
+        parent::__construct($ioloop);
+        $this->on('connection', array($this, '__handle'));
+        $this->on('error', function($err, $client){
+            $client->close();
+        });
+    }
+
+    /**
+     * Register the application handler
+     * 
+     * @param   callable   $callback
+     * @return  this
+     */
+    public function createServer($callback)
+    {
+        $this->app = $callback;
+        return $this;
+    }
+
+    /** @ignore */
+    public function __handle($client)
+    {
+        $client->on('data', array($this, '__parse'));
+
+        // The request object
+        $client->req    =   new Prototype;
+
+        // The response object
+        $client->res    =   new Prototype;
+
+        // Alias of $this
+        $that           =   $this;
+
+        // Whether headers sent or not
+        $client->res->headersSent   =   false;
+
+        // Alias of IOStream::write()
+        $client->res->write         =   function($data) use($client) {
+            $client->write($data);
+        };
+
+        // Write headers to the client
+        $client->res->writeHead     =   function($status, array $headers) use($client, $that)
+        {
+            if ( $client->res->headersSent === true ) {
+                return $client->res;
+            }
+
+            if ( ! isset($headers['Server']) ) {
+                $headers['Server'] = "Plus/1.0.1";
+            }
+
+            if ( ! isset($headers['X-Powered-By']) ) {
+                $headers['X-Powered-By'] = "PHP/" . phpversion();
+            }
+
+            $status =   isset($that->codes[$status]) ? $status : 500;
+            $out    =   "";
+            $out   .=   "{$client->req->version} {$status} {$that->codes[$status]}\r\n";
+
+            foreach ( $headers as $k => $v ) {
+                foreach ( (array) $v as $v2 ) {
+                    $out .= "{$k}: {$v2}\r\n";
+                }
+            }
+
+            $client->write($out . "\r\n");
+            $client->res->headersSent = true;
+
+            return $client->res;
+        };
+
+        // Ends the request cycle only after sending all data
+        $client->res->end       =   function() use($client)
+        {
+            $client->on('drain', function($client){
+                $client->close();
+            });
+        };
+    }
+
+    /** @ignore */
+    public function __parse($data, $client)
+    {
+        // reached end of headers "\r\n\r\n"
+        if ( ! trim($data) )
+        {
+            // Whether we ended reading headers or not
+            $client->__endHeaders = true;
+        }
+
+        // because we reached end-of-headers, we will start the body
+        elseif ( $client->__endHeaders === true )
+        {
+            $this->emit('body', array($data, $client));
+        }
+
+        // we didn't reach the end-of-headers, lets parse the headers
+        else
+        {
+            // the first line "GET / HTTP/1.1"
+            if ( ! preg_match("/^([a-z]+)\s(.*?)\sHTTP/i", $data) )
+            {
+                $k  =   strtolower(str_replace('-', '_', strtok($data, ":")));
+                $v  =   trim(ltrim(strstr($data, ":"), ":"));
+
+                // the header [key: value]
+                $client->req->headers->{$k} = $v;
+            }
+
+            // field: value
+            else
+            {
+                // - the request method .
+                // - the request uri .
+                // - the request version .
+                list($client->req->method, $client->req->uri, $client->req->version) = explode(' ', trim($data), 3);
+
+                // - make sure the request method in upper-case
+                // - the request path [and make sure it starts and ends with '/']
+                // - the request query [raw string]
+                $client->req->method    =   strtoupper($client->req->method);
+                $client->req->path      =   preg_replace('/\/+/', '/', '/'.(trim(strtok($client->req->uri, "?"))).'/');
+                $client->req->queryRaw  =   trim(ltrim(strstr($client->req->uri, "?"), "?"));
+            }
+        }
+
+        if ( isset($this->app) && is_callable($this->app) ) {
+            $this->app($client->req, $client->res, $client);
+        }
+    }
+}
+
+// ------------------------------
+
+/**
  * Frame
  *
  * @package     Plus
@@ -1294,6 +1521,16 @@ Class Frame extends IOLoop
     public function ioserver()
     {
         return new IOServer($this);
+    }
+
+    /**
+     * Create a new HTTP Daemon
+     * 
+     * @return  HTTPD
+     */
+    public function httpd()
+    {
+        return new HTTPD($this);
     }
 }
 
