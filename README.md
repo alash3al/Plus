@@ -1,5 +1,5 @@
 # Plus
-An asynchronous I/O environment in pure PHP, in anthoer words, it is a micro nodejs implementation in pure PHP
+An asynchronous I/O environment in pure PHP, in another words, it is a micro nodejs implementation in pure PHP
 
 # Example:
 > a simple HTTP server using the new HTTPD class
