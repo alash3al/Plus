@@ -629,15 +629,15 @@
     $httpd->createServer(function($request, $response)
     {
         $response->writeHead(200, ["Content-Type" => "text/html"]);
-        $response->write("<!DOCTYPE 'html'>");
-        $response->write("<html>");
-        $response->write("<head>");
-        $response->write("<title>Welcome to Plus http daemon</title>");
-        $response->write("</head>");
-        $response->write("<body>");
-        $response->write("<h1>It works !!</h1>");
-        $response->write("</body>");
-        $response->write("</html>");
+        $response->write("&lt;!DOCTYPE 'html'>");
+        $response->write("&lt;html>");
+        $response->write("&lt;head>");
+        $response->write("&lt;title>Welcome to Plus http daemon</title>");
+        $response->write("&lt;/head>");
+        $response->write("&lt;body>");
+        $response->write("&lt;h1>It works !!</h1>");
+        $response->write("&lt;/body>");
+        $response->write("&lt;/html>");
         $response->end();
     });
 
